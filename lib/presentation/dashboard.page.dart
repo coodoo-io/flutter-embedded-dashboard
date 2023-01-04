@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/data/providers.dart';
-import 'package:sample/presentation/dashboard.model.dart';
-import 'package:sample/presentation/widgets/box.widget.dart';
+import 'package:sample/presentation/dashboard.controller.dart';
 import 'package:sample/presentation/widgets/news.widget.dart';
 import 'package:sample/presentation/widgets/soccer_score.widget.dart';
 import 'package:sample/presentation/widgets/weather.widget.dart';
@@ -22,23 +19,48 @@ class DashboardPage extends ConsumerWidget {
           title: const Text(
             'Home News Controll',
           ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  ref.read(dashboardProvider.notifier).reloadData();
+                },
+                icon: const Icon(Icons.refresh_outlined))
+          ],
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                WeatherWidget(),
-                NewsWidget(),
-                SoccerScore(),
+                SizedBox(width: 20),
+                Flexible(
+                  flex: 1,
+                  child: WeatherWidget(),
+                ),
+                SizedBox(width: 20),
+                Flexible(
+                  flex: 2,
+                  child: NewsWidget(),
+                ),
+                SizedBox(width: 20),
+                Flexible(
+                  flex: 1,
+                  child: SoccerScore(),
+                ),
+                SizedBox(width: 20),
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                    onPressed: () {}, icon: Icon(Icons.newspaper_outlined))
+                SizedBox(width: 20),
+                Flexible(
+                  flex: 1,
+                  child: NewsWidget(),
+                ),
+                SizedBox(width: 20),
               ],
             )
           ],

@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/data/providers.dart';
-import 'package:sample/presentation/dashboard.model.dart';
+import 'package:sample/presentation/models/dashboard.model.dart';
 import 'package:sample/presentation/widgets/box.widget.dart';
 
 class WeatherWidget extends ConsumerWidget {
@@ -12,30 +12,10 @@ class WeatherWidget extends ConsumerWidget {
     // TODO: implement build
     var weaterhState = ref.watch(dashboardProvider).weather;
 
-    log(weaterhState.value);
-    IconData icon;
-    switch (weaterhState) {
-      case WeatherType.rainy:
-        // do something
-        icon = Icons.umbrella_outlined;
-        break;
-      case WeatherType.sunny:
-        // do something else
-        icon = Icons.sunny;
-        break;
-      case WeatherType.none:
-        // TODO: Handle this case.
-        icon = Icons.nat;
-        break;
-      case WeatherType.snowy:
-        icon = Icons.snowing;
-        // TODO: Handle this case.
-        break;
-    }
     var theme = Theme.of(context).textTheme.labelMedium;
     return BoxWidget(
       title: "Wetter",
-      child: weaterhState == WeatherType.none
+      child: weaterhState == null
           ? const CircularProgressIndicator()
           : Padding(
               padding: const EdgeInsets.all(10),
@@ -43,20 +23,55 @@ class WeatherWidget extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Ort: Mainz",
-                    style: theme,
-                  ),
+                  Row(children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.purpleAccent.withOpacity(0.5),
+                          border:
+                              Border.all(color: Colors.purpleAccent, width: 1),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(45.0))),
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 10, left: 5),
+                        child: Row(
+                          children: [
+                            Icon(Icons.location_on_outlined),
+                            Text(
+                              "${weaterhState.location.name}",
+                              style: theme,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    weaterhState.current.is_day == 1
+                        ? Icon(Icons.sunny)
+                        : Icon(Icons.nightlight_outlined),
+                  ]),
                   SizedBox(
-                    height: 10,
+                    height: 30,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        "Aktuelles Wetter:",
-                        style: theme,
+                      weaterhState.current.condition.icon.isNotEmpty
+                          ? Container(
+                              width: 80,
+                              height: 80,
+                              child: Image.network(
+                                  'https:${weaterhState.current.condition.icon}'))
+                          : const SizedBox(
+                              width: 80,
+                              height: 80,
+                            ),
+                      SizedBox(
+                        width: 20,
                       ),
-                      Icon(icon)
+                      Text(
+                        '${weaterhState.current.temp_c.toStringAsFixed(1)}°C',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      )
                     ],
                   ),
                 ],

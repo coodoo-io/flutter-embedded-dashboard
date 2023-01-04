@@ -8,61 +8,66 @@ class BoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var containerWidth = (MediaQuery.of(context).size.width - 80) / 3;
-    var containerHeight = (MediaQuery.of(context).size.height - 80) / 3;
+    var containerHeight = (MediaQuery.of(context).size.height - 200) / 2;
     // TODO: implement build
-    return Padding(
-      padding: const EdgeInsets.all(5),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.labelSmall,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    Colors.black,
-                    Colors.blueGrey,
-                  ],
-                ),
-                border: Border.all(color: Colors.transparent, width: 1),
-                borderRadius: const BorderRadius.all(Radius.circular(
-                        5.0) //                 <--- border radius here
-                    )),
-            child: Padding(
-              padding: const EdgeInsets.all(2),
-              child: Container(
-                width: containerWidth,
-                height: containerHeight,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(
-                          5.0) //                 <--- border radius here
-                      ),
-                  gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: [
-                      Colors.blueGrey,
-                      Colors.black,
-                    ],
-                  ),
-                ),
-                child: Center(child: child),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.labelSmall,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Container(
+          decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Colors.deepPurple,
+                  Colors.black,
+                ],
               ),
+              border: Border.all(color: Colors.transparent, width: 1),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 4,
+                  offset: const Offset(0, 3), // changes position of shadow
+                ),
+              ],
+              borderRadius: const BorderRadius.all(Radius.circular(
+                      5.0) //                 <--- border radius here
+                  )),
+          child: Padding(
+            padding: const EdgeInsets.all(2),
+            child: Container(
+              height: containerHeight,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Colors.black.withOpacity(0.5),
+                      Colors.deepPurple.withOpacity(0.2),
+                    ],
+                    stops: [
+                      0.85,
+                      1
+                    ]),
+              ),
+              child: Center(child: child),
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }

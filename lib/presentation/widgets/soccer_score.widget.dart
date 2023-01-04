@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/data/providers.dart';
-import 'package:sample/presentation/dashboard.model.dart';
+import 'package:sample/presentation/models/dashboard.model.dart';
 import 'package:sample/presentation/widgets/box.widget.dart';
 
 class SoccerScore extends ConsumerWidget {
@@ -15,7 +13,7 @@ class SoccerScore extends ConsumerWidget {
     var theme = Theme.of(context).textTheme.labelMedium;
     return BoxWidget(
       title: "Soccer Score",
-      child: weaterhState == WeatherType.none
+      child: weaterhState == null
           ? const CircularProgressIndicator()
           : Padding(
               padding: const EdgeInsets.all(10),
