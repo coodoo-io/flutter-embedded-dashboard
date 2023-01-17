@@ -6,6 +6,9 @@ import 'package:sample/presentation/models/news.model.dart';
 import 'package:sample/presentation/widgets/box.widget.dart';
 
 class NewsWidget extends ConsumerWidget {
+  double aspectRatio;
+  bool shorten;
+  NewsWidget({super.key, this.aspectRatio = 16 / 9, this.shorten = true});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO: implement build
@@ -18,8 +21,14 @@ class NewsWidget extends ConsumerWidget {
           : Padding(
               padding: const EdgeInsets.all(10),
               child: CarouselSlider(
-                items: news.map((e) => NewsItemWidget(news: e)).toList(),
-                options: CarouselOptions(viewportFraction: 1),
+                items: news
+                    .map((e) => NewsItemWidget(
+                          news: e,
+                          shorten: shorten,
+                        ))
+                    .toList(),
+                options: CarouselOptions(
+                    viewportFraction: 1, aspectRatio: aspectRatio),
               )),
     );
   }
@@ -27,7 +36,8 @@ class NewsWidget extends ConsumerWidget {
 
 class NewsItemWidget extends StatelessWidget {
   NewsModel news;
-  NewsItemWidget({super.key, required this.news});
+  bool shorten;
+  NewsItemWidget({super.key, required this.news, this.shorten = true});
 
   @override
   Widget build(BuildContext context) {
@@ -36,18 +46,11 @@ class NewsItemWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Aktuelle News",
-          style: theme,
-        ),
-        const SizedBox(
-          height: 10,
-        ),
         Row(
           children: [
             Flexible(
               child: Text(
-                '${news.title}',
+                news.title,
                 style: theme,
               ),
             )
@@ -58,10 +61,12 @@ class NewsItemWidget extends StatelessWidget {
         ),
         Row(
           children: [
-            Flexible(
+            Expanded(
               child: Text(
-                news.content.length > 80
-                    ? '${news.content.substring(0, 80)}...'
+                shorten
+                    ? news.content.length > 80
+                        ? '${news.content.substring(0, 80)}...'
+                        : news.content
                     : news.content,
                 style: theme,
               ),
@@ -70,12 +75,12 @@ class NewsItemWidget extends StatelessWidget {
         ),
         Row(
           children: [
-            Container(
+            SizedBox(
                 width: 75,
                 height: 75,
                 child: (news.urlToImage.isNotEmpty)
                     ? Image.network(news.urlToImage)
-                    : SizedBox())
+                    : const SizedBox())
           ],
         )
       ],

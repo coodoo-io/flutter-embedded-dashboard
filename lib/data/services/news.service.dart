@@ -10,7 +10,7 @@ class NewsApi {
   getLatestNews() async {
     List<NewsModel> list = [];
     var result = await dio.get(
-        'https://newsapi.org/v2/top-headlines?apiKey=<your-api-key>&pageSize=3&country=de');
+        'https://newsapi.org/v2/top-headlines?apiKey=<yourapi-key-here>&pageSize=3&country=de');
     log(NewsModel.fromJson(result.data['articles'][0]).toString());
 
     RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
